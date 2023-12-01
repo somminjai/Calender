@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        table {
+            width: 770px;
+            margin-top: 5px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 30px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            height: 30px;
+        }
+        th.saturday, td.saturday {
+            color: #0000ff;
+        }
+
+        th.sunday, td.sunday {
+            color: #ff0000;
+        }
+        h2 {
+            text-align: center;
+        }
+       .calendar{
+           margin: auto;
+       }
+    </style>
+    <title>2023 Calendar</title>
+</head>
+<body>
+<div>
+    <h2>12월</h2>
+    <div class="calendar-buttons">
+        <button onclick="previousMonth()">이전 달</button>
+        <button onclick="nextMonth()">다음 달</button>
+    </div>
+<table class="calendar">
+    <thead>
+    <tr>
+        <th class="sunday">일</th>
+        <th>월</th>
+        <th>화</th>
+        <th>수</th>
+        <th>목</th>
+        <th>금</th>
+        <th class="saturday">토</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>1</td>
+        <td class="saturday">2</td>
+
+    </tr>
+
+    <tr>
+        <td class="sunday">3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td class="saturday">9</td>
+    </tr>
+    <tr>
+        <td class="sunday">10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td class="saturday">16</td>
+    </tr>
+    <tr>
+        <td class="sunday">17</td>
+        <td>18</td>
+        <td>19</td>
+        <td>20</td>
+        <td>21</td>
+        <td>22</td>
+        <td class="saturday">23</td>
+    </tr>
+    <tr>
+        <td class="sunday">24</td>
+        <td>25</td>
+        <td>26</td>
+        <td>27</td>
+        <td>28</td>
+        <td>29</td>
+        <td class="saturday">30</td>
+    </tr>
+    <tr>
+        <td class="sunday">31</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+<script>
+
+    let currentMonth = 0;
+
+
+    function previousMonth() {
+        currentMonth--;
+        updateCalendar();
+    }
+
+    function nextMonth() {
+        currentMonth++;
+        updateCalendar();
+    }
+
+        function updateCalendar() {
+            const monthElement = document.querySelector('h2');
+            const calendarBody = document.querySelector('tbody');
+            const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+
+
+        currentMonth = (currentMonth + 12) % 12;
+
+
+        monthElement.textContent = months[currentMonth];
+
+
+        calendarBody.innerHTML = '';
+
+
+        const firstDay = new Date(2023, currentMonth, 1);
+
+
+        const lastDay = new Date(2023, currentMonth + 1, 0);
+        const totalDays = lastDay.getDate();
+
+
+        const startDayOfWeek = firstDay.getDay();
+
+            const holidays = [
+                { month: 0, day: 1 },
+                { month: 0, day: 31 },
+                { month: 1, day: 1 },
+                { month: 1, day: 2 },
+                { month: 2, day: 1 },
+                { month: 2, day: 9 },
+                { month: 4, day: 5 },
+                { month: 4, day: 8 },
+                { month: 5, day: 1 },
+                { month: 5, day: 6 },
+                { month: 7, day: 15 },
+                { month: 8, day: 9 },
+                { month: 8, day: 10 },
+                { month: 8, day: 11 },
+                { month: 8, day: 12 },
+                { month: 9, day: 3 },
+                { month: 9, day: 9 },
+                { month: 10, day: 14 },
+                { month: 11, day: 25 },
+            ];
+
+
+
+
+
+        let dayCounter = 1;
+        for (let i = 0; i < 6; i++) {
+            const row = calendarBody.insertRow();
+
+            for (let j = 0; j < 7; j++) {
+                const cell = row.insertCell();
+
+                if (i === 0 && j < startDayOfWeek) {
+
+                    cell.textContent = '';
+                } else if (dayCounter <= totalDays) {
+
+                    cell.textContent = dayCounter;
+
+                    if (j === 0) {
+
+                        cell.classList.add('sunday');
+                    } else if (j === 6) {
+
+                        cell.classList.add('saturday');
+                    }
+
+                    const currentDate = new Date(2023, currentMonth, dayCounter);
+                    for (const holiday of holidays) {
+                        if (
+                            currentDate.getMonth() === holiday.month &&
+                            dayCounter === holiday.day
+                        ) {
+                            cell.style.color = 'red';
+                        }
+                    }
+
+                    dayCounter++;
+                }
+            }
+        }
+    }
+
+    updateCalendar();
+</script>
+</html>
